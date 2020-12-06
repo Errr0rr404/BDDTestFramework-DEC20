@@ -1,9 +1,11 @@
 package com.pnt.api;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ApiPractice1 {
@@ -81,4 +83,52 @@ There are following public apis
     }
 
 
+    @Test
+    public void updateARecord() {
+        JSONObject js = new JSONObject();
+        js.put("name", "Rahat");
+        js.put("salary", 135000);
+        js.put("age", 27);
+
+        Response response = RestAssured.given().contentType(ContentType.JSON)
+                .body(js.toString()).when().put(updateEndpoint + 7258).then().extract().response();
+
+        System.out.println(response.asString());
+        System.out.println(response.getStatusCode());
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+
+    @Test
+    public void deleteARecord() {
+        Response response = RestAssured.given().contentType(ContentType.JSON)
+                .delete(deleteEndpoint + 3162).then().extract().response();
+
+        System.out.println(response.asString());
+        System.out.println(response.getStatusCode());
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+
+    @Test
+    public void testJSONArray() {
+        JSONObject js1 = new JSONObject();
+        js1.put("name", "peoplentech");
+        js1.put("salary", 1000);
+        js1.put("age", 27);
+
+        JSONObject js2 = new JSONObject();
+        js2.put("name", "peoplentech");
+        js2.put("salary", 1000);
+        js2.put("age", 27);
+
+
+        JSONArray array = new JSONArray();
+        array.put(js1);
+        array.put(js2);
+
+
+        System.out.println(array);
+
+    }
 }
